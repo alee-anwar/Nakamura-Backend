@@ -23,6 +23,7 @@ cloudinary.config({
 
 // function to save product details with image as url
 exports.testPostProduct = async (req, res, next) => {
+  console.log("The testPostProduct API has been hit.");
   // ImageModel.deleteMany();
   //active and unactive
 
@@ -72,157 +73,72 @@ exports.testPostProduct = async (req, res, next) => {
     });
   } catch (err) {
     next(err);
-  }
+  }
 };
 
 // const product = require("../models/product");
 
-exports.postProduct = async (req, res, next) => {
-  console.log("The uploadProduct API has been called.");
+// exports.postProduct = async (req, res, next) => {
+//   console.log("The uploadProduct API has been called.");
 
-  const {
-    productTitle,
-    sku,
-    color,
-    price,
-    size,
-    status,
-    tag,
-    description,
-    quantity,
-    date,
-    category,
-    subcategory,
-    image,
-  } = req.body;
+//   const {
+//     productTitle,
+//     sku,
+//     color,
+//     price,
+//     size,
+//     status,
+//     tag,
+//     description,
+//     stock,
+//     date,
+//     category,
+//     image,
+//   } = req.body;
 
-  //below active is converted to true and
-  //deactive is converted to false
-  // mongoose.Schema.Types.Boolean.convertToTrue.add("Active");
-  // mongoose.Schema.Types.Boolean.convertToFalse.add("Deactive");
+//   const checkProduct = await ImageModel.findOne({
+//     productTitle: req.body.productTitle,
+//   });
+//   if (checkProduct) {
+//     return res.status(403).json({
+//       message: "Product with the same name already exists.",
+//     });
+//   }
+//   if (await ImageModel.findOne({ sku: req.body.sku })) {
+//     return res
+//       .status(403)
+//       .json({ message: "The sku should be a unique value" });
+//   }
+//   if (req.body.price <= 0) {
+//     return res.status(403).json({ message: "The price should be positive" });
+//   }
+//   try {
+//     const newProduct = new ImageModel({
+//       productTitle: productTitle,
+//       sku: sku,
+//       color: color,
+//       size: size,
+//       price: price,
+//       status: status,
+//       tag: tag,
+//       description: description,
+//       stock: stock,
+//       date: date,
+//       category: category,
+//       image: image,
+//     });
 
-  //below are checks
-  const checkProduct = await ImageModel.findOne({
-    productTitle: req.body.productTitle,
-  });
-  if (checkProduct) {
-    //await ImageModel.deleteMany({ productTitle: "coke" }); //this code is for deleteing
-    // records of database
-    return res.status(403).json({
-      message: "Product with the same name already exists.",
-    });
-  }
-  if (await ImageModel.findOne({ sku: req.body.sku })) {
-    return res
-      .status(403)
-      .json({ message: "The sku should be a unique value" });
-  }
-  if (req.body.price <= 0) {
-    return res.status(403).json({ message: "The price should be positive" });
-  }
+//     await newProduct.save().then((newProduct) => {
+//       res.status(201).json({
+//         message: "The product description has been successfully uploaded..",
+//       });
+//     });
+//   } catch (error) {
+//     console.log("error = " + error);
+//     return res.status(403).json({ message: "Could not upload the product." });
+//   }
+// };
 
-  // console.log(price);
-  try {
-    const newProduct = new ImageModel({
-      productTitle: productTitle,
-      sku: sku,
-      color: color,
-      size: size,
-      price: price,
-      status: status,
-      tag: tag,
-      description: description,
-      quantity: quantity,
-      date: date,
-      category: category,
-      subcategory: subcategory,
-      image: image,
-    });
-
-    await newProduct.save().then((newProduct) => {
-      res.status(201).json({
-        message: "The product description has been successfully uploaded..",
-      });
-    });
-  } catch (error) {
-    console.log("error = " + error);
-    return res.status(403).json({ message: "Could not upload the product." });
-  }
-
-  // below is the uploading of picture using multer
-  // //Storage
-  // const Storage = multer.diskStorage({
-  //   destination: "uploads",
-  //   filename: (req, file, cb) => {
-  //     cb(null, file.originalname);
-  //   },
-  // });
-
-  // //upload
-  // const upload = multer({
-  //   storage: Storage,
-  // }).single("testImage");
-
-  // upload(req, res, async (err) => {
-  //   if (await ImageModel.findOne({ SKU: req.body.SKU })) {
-  //     return res
-  //       .status(403)
-  //       .json({ message: "The sku should be a unique value" });
-  //   }
-  //   if (req.body.price <= 0) {
-  //     return res.status(403).json({ message: "The price should be positive" });
-  //   }
-  //   if (err) {
-  //     console.log(err);
-  //   } else {
-  //     const checkProduct = await ImageModel.findOne({
-  //       productTitle: req.body.productTitle,
-  //     });
-  //     if (checkProduct) {
-  //       //await ImageModel.deleteMany({ productTitle: "coke" }); //this code is for deleteing
-  //       // records of database
-  //       return res.status(403).json({
-  //         message: "Product with the same name already exists.",
-  //       });
-  //     } else {
-  //       console.log(req.body.status);
-  //       const newImage = new ImageModel({
-  //         productTitle: req.body.productTitle,
-  //         SKU: req.body.SKU,
-  //         color: req.body.color,
-  //         price: req.body.price,
-  //         status: req.body.status,
-  //         tag: req.body.tag,
-  //         description: req.body.description,
-  //         quantity: req.body.quantity,
-  //         date: req.body.date,
-  //         category: req.body.category,
-  //         subcategory: req.body.subcategory,
-  //         // image: req.body.testImage,
-  //         image: {
-  //           data: req.file.filename,
-  //           contentType: "image/png",
-  //         },
-  //       });
-  //       newImage
-  //         .save()
-  //         .then((product) =>
-  //           res.send(
-  //             "The product description has been successfully uploaded.." +
-  //               product
-  //           )
-  //         )
-  //         .catch((err) => {
-  //           console.log(err);
-  //           {
-  //             return res.send("Error while uploading the product" + err);
-  //           }
-  //         });
-  //     }
-  //   }
-  // });
-};
-//
 exports.viewProducts = async (req, res, next) => {
   console.log("The view products API has been hit");
   try {
@@ -292,23 +208,13 @@ exports.updateProduct = async (req, res, next) => {
           size: req.body.size,
           price: req.body.price,
           status: req.body.status,
-          tag: req.body.status,
+          tag: req.body.tag,
           description: req.body.description,
           quantity: req.body.quantity,
           date: req.body.date,
           category: req.body.category,
           subcategory: req.body.subcategory,
           image: req.body.image,
-          // image: req.body.testImage,
-          // image: {
-          //   data: req.file.filename,
-          //   contentType: "image/png",
-          // },
-          // image: {
-          //   data: req.file.filename,
-          //   contentType: "image/png",
-          // },
-          // testImage: req.file.finename,
         },
       },
       { new: true },
@@ -328,75 +234,6 @@ exports.updateProduct = async (req, res, next) => {
       message: "Could not update the product",
     });
   }
-
-  //below is old code = updation with multer
-
-  // console.log("deleteId = " + deleteId);
-  // //Storage;
-  // const Storage = multer.diskStorage({
-  //   destination: "uploads",
-  //   filename: (req, file, cb) => {
-  //     cb(null, file.originalname);
-  //   },
-  // });
-
-  // //wait
-
-  // //upload
-  // const upload = multer({
-  //   storage: Storage,
-  // }).single("testImage");
-
-  // upload(req, res, async (err) => {
-  //   // console.log(req.body);
-  //   if (err) {
-  //     console.log(err);
-  //   } else {
-  //     console.log(req.body.productTitle);
-
-  //     ImageModel.findOneAndUpdate(
-  //       { SKU: deleteId },
-  //       {
-  //         // $set: req.body,
-  //         $set: {
-  //           productTitle: req.body.productTitle,
-  //           color: req.body.color,
-  //           // SKU: req.body.SKU,
-  //           price: req.body.price,
-  //           status: req.body.status,
-  //           tag: req.body.status,
-  //           description: req.body.description,
-  //           quantity: req.body.quantity,
-  //           date: req.body.date,
-  //           category: req.body.category,
-  //           subcategory: req.body.subcategory,
-  //           image: {
-  //             data: req.file.filename,
-  //             contentType: "image/png",
-  //           },
-  //           // image: req.body.testImage,
-  //           // image: {
-  //           //   data: req.file.filename,
-  //           //   contentType: "image/png",
-  //           // },
-  //           // image: {
-  //           //   data: req.file.filename,
-  //           //   contentType: "image/png",
-  //           // },
-  //           // testImage: req.file.finename,
-  //         },
-  //       },
-  //       { new: true },
-  //       (err, data) => {
-  //         if (data === null) {
-  //           res.send("No data found");
-  //         } else {
-  //           res.send("Congratulation: Data updated. updatedProduct = " + data);
-  //         }
-  //       }
-  //     );
-  //   }
-  // });
 };
 
 exports.deleteProduct = async (req, res, next) => {

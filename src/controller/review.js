@@ -55,20 +55,41 @@ exports.viewReviews = async (req, res, next) => {
   }
 };
 
+// exports.deleteReview = async (req, res, next) => {
+//   console.log("Delete Review API has been called.");
+//   let deleteReviewId = req.params.id;
+//   const check = await review.findOne({ _id: deleteReviewId });
+//   if (!check) {
+//     return res.send("No review with given id");
+//   }
+//   //write a check here.
+//   review.deleteOne({ _id: deleteReviewId }, function (err, docs) {
+//     if (err) {
+//       res.send("Error! You have entered wrong key.");
+//     } else {
+//       if (docs === null) {
+//         res.send("Wrong ID");
+//       } else {
+//         res.send(
+//           "The requested review with reviewId = " +
+//             deleteReviewId +
+//             " has been deleted"
+//         );
+//       }
+//     }
+//   });
+// };
+
 exports.deleteReview = async (req, res, next) => {
   console.log("Delete Review API has been called.");
   let deleteReviewId = req.params.id;
-  const check = await review.findOne({ _id: deleteReviewId });
-  if (!check) {
-    return res.send("No review with given id");
-  }
-  //write a check here.
-  review.deleteOne({ _id: deleteReviewId }, function (err, docs) {
+  
+  review.deleteOne({ _id: deleteReviewId }, function (err, result) {
     if (err) {
-      res.send("Error! You have entered wrong key.");
+      res.send("Error! You have entered the wrong key.");
     } else {
-      if (docs === null) {
-        res.send("Wrong ID");
+      if (result.deletedCount === 0) {
+        res.send("Review not found.");
       } else {
         res.send(
           "The requested review with reviewId = " +
@@ -79,6 +100,7 @@ exports.deleteReview = async (req, res, next) => {
     }
   });
 };
+
 
 exports.searchReview = async (req, res, next) => {
   console.log("search review api called.");

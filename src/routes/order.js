@@ -35,4 +35,12 @@ router.get(
   // isAdmin,
   orderControler.searchOrders
 );
+// Update order status
+router.put(
+  "/updateOrderStatus/:id",
+  // verifyToken,
+  // isAuthorized,
+  // isAdmin,
+  orderControler.updateOrderStatus
+);
 module.exports = router;

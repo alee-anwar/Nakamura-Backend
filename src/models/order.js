@@ -5,12 +5,12 @@ const orderShema = mongoose.Schema({
     type: String,
     unique: true,
   },
-  customerFirstName: {
+  firstName: {
     type: String, //   required: true,
     //type: mongoose.Schema.Types.ObjectId,
     //ref: "orderItem"
   },
-  customerFirstName: {
+  lastName: {
     type: String, //   required: true,
     //type: mongoose.Schema.Types.ObjectId,
     //ref: "orderItem"
@@ -46,7 +46,7 @@ const orderShema = mongoose.Schema({
     {
       productName: String,
       productId: String,
-      productQuantity: String,
+      productQuantity: Number,
       unitPrice: Number,
       productImage: String,
     },
